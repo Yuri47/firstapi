@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<title>Cadastrar Cliente</title>
+</head>
+<body>
+	
+
+
+<main role="main" class="container">
+
+      <div class="starter-template">
+          
+          
+          
+	Nome: <input type="text" name="fullname" id="fullname"><br>
+	Email:<input type="text" name="email" id="email"><br>
+	Senha:<input type="text" name="password" id="password"><br>
+	 
+ 
+
+  
+
+<div id="resultado" class="resultado">AJAX</div>
+
+
+<button id="tbl" class="btn btn-primary">Enviar </button>
+
+          
+
+      </div>
+
+    </main><!-- /.container -->
+
+
+
+
+
+ 
+
+<script>
+
+$('#tbl').on('click', function (event) {
+    
+   //     alert("Materiais Adicionados!");
+   
+    var fullname = $('#fullname').val();
+    var email = $('#email').val();
+    var password = $('#password').val();
+
+
+console.log(fullname);
+	
+	 $.ajax({
+          url : "http://127.0.0.1:5000/users",
+          type : 'post',
+          dataType: 'json',
+                        headers: {
+                            Accept:"application/json",
+                            "Access-Control-Allow-Origin": "*"
+                        },
+          crossDomain: true,
+          async: false,
+          data : {
+               'fullname' : fullname,
+               'email' : email,
+               'password': password
+         },
+          beforeSend : function(){
+               $("#resultado").html("ENVIANDO...");
+          }
+     })
+     .done(function(msg){
+          $("#resultado").html('Cliente Cadastrado');
+     })
+     .fail(function(jqXHR, textStatus, msg){
+         // alert(msg);
+         $("#resultado").html(textStatus);
+     }); 
+
+     });
+</script>
+
+
+</body>
+</html>
