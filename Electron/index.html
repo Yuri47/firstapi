@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	<script>window.$ = window.jQuery = require('jquery');</script>
+	<title>Cadastrar Cliente</title>
+  </head>
+  <body>
+    <h1>Lista de Clientes</h1>
+
+<main role="main" class="container">
+
+      <div class="starter-template">
+          
+          
+          
+	Nome: <input type="text" name="fullname" id="fullname"><br>
+	Email:<input type="text" name="email" id="email"><br>
+	Senha:<input type="text" name="password" id="password"><br>
+	 
+ 
+
+  
+
+<div id="resultado1" class="resultado">AJAX</div>
+
+
+<button id="tbl" class="btn btn-primary">Enviar </button>
+
+          
+
+      </div>
+    
+    
+    
+    
+    
+    
+        <div class="starter-template">
+          <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Email</th>
+      <th scope="col">Senha</th>
+    </tr>
+  </thead>
+  <tbody  id="resultado" class="resultado">
+   
+    
+   
+  </tbody>
+</table>
+
+      </div>
+    
+    
+    
+    
+    
+    
+    
+
+    </main><!-- /.container -->
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <script>
+
+$('#tbl').on('click', function (event) {
+    
+   //     alert("Materiais Adicionados!");
+   
+    var fullname = $('#fullname').val();
+    var email = $('#email').val();
+    var password = $('#password').val();
+
+
+console.log(fullname);
+	
+	 $.ajax({
+          url : "http://127.0.0.1:5000/users",
+          type : 'post',
+          dataType: 'json',
+                        headers: {
+                            Accept:"application/json",
+                            "Access-Control-Allow-Origin": "*"
+                        },
+          crossDomain: true,
+          async: false,
+          data : {
+               'fullname' : fullname,
+               'email' : email,
+               'password': password
+         },
+          beforeSend : function(){
+               $("#resultado1").html("ENVIANDO...");
+          }
+     })
+     .done(function(msg){
+          $("#resultado1").html('Cliente Cadastrado');
+     })
+     .fail(function(jqXHR, textStatus, msg){
+         // alert(msg);
+         $("#resultado1").html(textStatus);
+     }); 
+
+     });
+</script>
+      
+      
+      
+      
+      <script>
+// Classe para chamar o Json.
+function json(){
+	var qtd;
+	var retorno;
+
+	// Resgatar valores.
+	json.prototype.resgatarValores = function(){
+		$('#resultado').html('Carregando dados...');
+
+		// Estrutura de resultado.
+		$.getJSON("http://127.0.0.1:5000/users", function(data){
+			this.qtd = data.length;
+			this.retorno = '';
+            console.log(data);
+			for (i = 0; i < this.qtd; i++){
+			 	this.retorno += '<tr><th scope="row">'  + data[i]._id + ' </th><br />';
+				this.retorno += '<td>'  + data[i].fullname + '</td>';
+				this.retorno += '<td>'  + data[i].email + '</td>';
+				this.retorno += '<td>'  + data[i].password + '</td></tr>';
+				 
+			}
+
+           
+             
+            
+            
+            
+            
+			$('#resultado').html(this.retorno);
+		});
+
+	}
+
+}
+
+// Objeto.
+var obj = new json();
+obj.resgatarValores();
+
+</script>
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>
