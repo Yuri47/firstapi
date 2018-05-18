@@ -12,7 +12,8 @@
 
       <div class="starter-template">
           
-          
+        <button class="btn btn-secundary"  id="frameless-window">frameless-window</button>
+      
           
 	Nome: <input type="text" name="fullname" id="fullname"><br>
 	Email:<input type="text" name="email" id="email"><br>
@@ -44,6 +45,8 @@
       <th scope="col">Nome</th>
       <th scope="col">Email</th>
       <th scope="col">Senha</th>
+      <th scope="col">Editar</th>
+      <th scope="col">Apagar</th>
     </tr>
   </thead>
   <tbody  id="resultado" class="resultado">
@@ -110,6 +113,10 @@ console.log(fullname);
      })
      .done(function(msg){
           $("#resultado1").html('Cliente Cadastrado');
+         obj.resgatarValores();
+         $('#password').val('');
+         $('#fullname').val('');
+         $('#email').val('');
      })
      .fail(function(jqXHR, textStatus, msg){
          // alert(msg);
@@ -138,17 +145,18 @@ function json(){
 			this.retorno = '';
             console.log(data);
 			for (i = 0; i < this.qtd; i++){
+                
+                var id = data[i]._id;
 			 	this.retorno += '<tr><th scope="row">'  + data[i]._id + ' </th><br />';
 				this.retorno += '<td>'  + data[i].fullname + '</td>';
 				this.retorno += '<td>'  + data[i].email + '</td>';
-				this.retorno += '<td>'  + data[i].password + '</td></tr>';
+				this.retorno += '<td>'  + data[i].password + '</td>';
+				this.retorno += '<td> <button class="editar" onclick="editar()" id="'+id+'">Editar</button></td>';
+				this.retorno += '<td> <button class="apagar" onclick="deletar()" id="'+id+'">Apagar</button></td>';
+				 
 				 
 			}
 
-           
-             
-            
-            
             
             
 			$('#resultado').html(this.retorno);
@@ -165,6 +173,82 @@ obj.resgatarValores();
 </script>
 
 
+     
+     
+     <script>
+      //SCRIPT PARA EDITAR
+         
+         
+         function editar() {
+         $('.editar').on('click', function (event) {
+          var id = $(this).attr('id');
+          console.log(id);
+              });
+      }
+       
+       
+       
+      
+      
+      function deletar() {
+          $('.apagar').on('click', function (event) {
+          var id = $(this).attr('id');
+          console.log("deletar: " + id);
+              
+          
+          
+          	 $.ajax({
+          url : "http://127.0.0.1:5000/users/" + id,
+          type : 'delete',
+          dataType: 'json',
+                        headers: {
+                            Accept:"application/json",
+                            "Access-Control-Allow-Origin": "*"
+                        },
+          crossDomain: true,
+          async: false,
+           
+          beforeSend : function(){
+               $("#resultado1").html("AGUARDE...");
+          }
+     })
+     .done(function(msg){
+          $("#resultado1").html('Cliente Apagado');
+         obj.resgatarValores();
+          
+     })
+     .fail(function(jqXHR, textStatus, msg){
+         // alert(msg);
+         $("#resultado1").html(textStatus);
+     }); 
+           
+          });
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      </script>
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
       
       
       

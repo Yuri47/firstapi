@@ -54,9 +54,9 @@ res.json(user);
 }); 
 
 app.post ('/users', function(req, res){
-var fullname = req.param('fullname');
-var email = req.param('email');
-var password = req.param('password');
+var fullname = req.body.fullname;
+var email = req.body.email;
+var password = req.body.password;
 
 new User({
 'fullname': fullname,
@@ -73,10 +73,10 @@ res.json(user);
 }); 
 
 app.put ('/users/:id', function(req, res){
-var fullname = req.param('fullname');
-var email = req.param('email');
-var password = req.param('password');
-var id = req.param('id');
+var fullname = req.body.fullname;
+var email = req.body.email;
+var password = req.body.password;
+var id = req.body.id;
 
 User.findById(id, function(error, user) {
 
@@ -108,7 +108,7 @@ if(error) {
 res.json({error: 'Nao foi possivel listar'});
 
 }else {
-user.remove(function(error){
+User.findByIdAndRemove(id, function(error){
 if(!error) {
 res.json({response: 'Usuario excluido'});
 }
